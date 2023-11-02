@@ -15,10 +15,10 @@ int main() {
     }
     
     cout << "1 " << hm[1];
-    for (int i = 2; i < maxr; i++) {
-        if (hm[i-1] != hm[i]) cout << ' ' << i << ' ' << hm[i];
-    }
-    cout << ' ' << maxr << " 0\n";
+    for (int i = 2; i < maxr; i++)
+        if (hm[i-1] != hm[i])
+			cout << " " << i << " " << hm[i];
+    cout << " " << maxr << " 0\n";
 
 	return 0;
 }
