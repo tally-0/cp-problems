@@ -1,50 +1,54 @@
 #include<iostream>
-#include<vector>
 #include<algorithm>
-#include<numeric>
-#include<climits>
+#include<cstring>
 
 using namespace std;
 
 #define endl '\n'
-#define pb push_back
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	vector<int> adj[8];
-
-	string in;
-	while(cin >> in && in != "#") {
-		int len = -1;
-		for(int i = 0; i < in.length(); i++) {
-			int j = in[i++] - 'A';
-			len = max(len, j);
-			while(++i < in.length() && in[i] != ';') {
-				int k = in[i] - 'A';
-				len = max(len, k);
-				adj[j].pb(k);
+	int mat[26][26], perm[8];
+	string s;
+	while(cin >> s && s != "#") {
+		int n = 0, added = 0;
+		memset(mat, 0, sizeof(mat));
+		for(int i = 0; i < s.length(); i++) {
+			int a = s[i] - 'A';
+			if (!(added & (1 << a))) {
+				perm[n++] = a;
+				added |= (1 << a);
+			}
+			for(i += 2; i < s.length() && s[i] != ';'; i++) {
+				int b = s[i] - 'A';
+				mat[a][b] = mat[b][a] = true;
+				if (!(added & (1 << b))) {
+					perm[n++] = b;
+					added |= (1 << b);
+				}
 			}
 		}
-		if (len < 0) break;
+		sort(perm, perm + n);
 
-		int perm[++len], revperm[len], minperm[len], minb = INT_MAX;
-		iota(perm, perm + len, 0);
+		int ans = 9, ansperm[8];
 		do {
-			for(int i = 0; i < len; i++) revperm[perm[i]] = i;
-			int maxb = 0;
-			for(int i = 0; i < len; i++) {
-				for(int j : adj[perm[i]]) maxb = max(abs(revperm[j] - i), maxb);
+			int mb = 0;
+			for(int i = 0; i < n - 1 && mb < ans; i++)
+				for(int j = i + 1; j < n && mb < ans; j++)
+					if (mat[perm[i]][perm[j]])
+						mb = max(mb, j - i);
+			if (mb < ans) {
+				ans = mb;
+				for(int i = 0; i < n; i++)
+					ansperm[i] = perm[i];
 			}
-			if (maxb < minb) {
-				minb = maxb;
-				copy(perm, perm + len, minperm);
-			}
-		} while(next_permutation(perm, perm + len));
+		} while(next_permutation(perm, perm + n));
 
-		for(int i : minperm) cout << (char)(i+'A') << " ";
-		cout << "-> " << minb << endl;
+		for(int i = 0; i < n; i++)
+			cout << (char)(ansperm[i] + 'A') << " ";
+		cout << "-> " << ans << endl;
 	}
 
 	return 0;
