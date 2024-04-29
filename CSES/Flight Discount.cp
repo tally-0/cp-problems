@@ -1,52 +1,52 @@
-#include <iostream>
-#include <queue>
-#include <vector>
+#include<iostream>
+#include<vector>
+#include<cstring>
+#include<queue>
 
 using namespace std;
 
-typedef pair<int,int> ii;
-typedef vector<pair<int,int>> vii;
+#define endl '\n'
+typedef pair<int,int> pii;
 typedef long long ll;
 
-struct state {
-	int p; bool u; ll c; 
-};
-
 int main() {
-	int n, m, u, v, w;
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	int n, m;
 	cin >> n >> m;
-	vii adj[n+1];
-	for (int f = 0; f < m; f++) {
-		cin >> u >> v >> w;
-		adj[u].push_back({v, w});
+	vector<pii> adj[100001];
+	while(m--) {
+		int a, b, c;
+		cin >> a >> b >> c;
+		adj[a].push_back({ b, c });
 	}
 
-	ll d[n+1][2];
-	for(int i = 0; i <= n; i++) {
-		d[i][0] = INT64_MAX;
-		d[i][1] = INT64_MAX;
-	}
-	d[1][0] = 0; d[1][1] = 0;
-	auto cmp = [&](const state &a, const state &b) { return a.c > b.c; };
-	priority_queue<state, vector<state>, decltype(cmp)> q(cmp);
-	q.push({1, false, 0});
-	while (!q.empty()) {
-		state a = q.top(); q.pop();
-		if (d[a.p][a.u] != a.c) continue;
-		if (a.p == n) break;
-		for (ii b : adj[a.p]) {
-			if (!a.u) {
-				if (d[a.p][a.u] + b.second / 2 < d[b.first][true]) {
-					d[b.first][true] = d[a.p][a.u] + b.second / 2;
-					q.push(state{b.first, true, d[b.first][true]});
-				}
+	ll dist[2][100001];
+	memset(dist, -1, sizeof(dist));
+	priority_queue<pair<ll, pair<int, bool>>> pq;
+	dist[0][1] = dist[1][1] = 0;
+	pq.push({ 0, { 1, false } });
+	while(!pq.empty()) {
+		int u = pq.top().second.first;
+		ll d = -pq.top().first;
+		bool used = pq.top().second.second;
+		pq.pop();
+		if (d != dist[used][u])
+			continue;
+		for(pii v : adj[u]) {
+			if (dist[used][v.first] == -1 || dist[used][v.first] > d + v.second) {
+				dist[used][v.first] = d + v.second;
+				pq.push({ -dist[used][v.first], { v.first, used } });
 			}
-			if (d[a.p][a.u] + b.second < d[b.first][a.u]) {
-				d[b.first][a.u] = d[a.p][a.u] + b.second;
-				q.push(state{b.first, a.u, d[b.first][a.u]});
+			if (!used && (dist[true][v.first] == -1 || dist[true][v.first] > d + v.second / 2)) {
+				dist[true][v.first] = d + v.second / 2;
+				pq.push({ -dist[true][v.first], { v.first, true } });
 			}
 		}
 	}
-	
-	cout << d[n][1];
+
+	cout << dist[true][n];
+
+	return 0;
 }
