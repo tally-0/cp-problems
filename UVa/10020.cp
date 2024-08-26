@@ -1,51 +1,54 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
+#include<iostream>
+#include<algorithm>
 
 using namespace std;
 
-#define ii pair<int,int>
-#define vii vector<pair<int,int>>
+#define endl '\n'
+typedef pair<int,int> ii;
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int cases, M, a, b;
-	cin >> cases;
+	int t, m;
+	ii iter[100002];
+	cin >> t;
+	while(t--) {
+		cin >> m;
+		int n = 0, a, b;
+		while(cin >> a >> b && (a || b))
+			iter[n++] = { a, b };
 
-	while(cases--) {
-		cin >> M;
-		vii segs;
-		while(cin >> a >> b && a+b != 0) segs.push_back(make_pair(a, b));
-
-		sort(segs.begin(), segs.end(), [] (ii lhs, ii rhs) {
-			if (lhs.first == rhs.first) {
+		sort(iter, iter + n, [](const ii& lhs, const ii& rhs) {
+			if (lhs.first == rhs.first)
 				return lhs.second > rhs.second;
-			}
 			return lhs.first < rhs.first;
 		});
 
-		int end = 0, i = 0;
-		vii used;
-		while(end < M) {
-			int maxi = -1, maxr = end;
-			while(segs[i].first <= end && i < segs.size()) {
-				if (segs[i].second > maxr) { 
-					maxi = i; 
-					maxr = segs[i].second;
+		int i = 0, r = 0, count = 0, ans[100002];
+		while(r < m && i < n) {
+			int maxr = r, maxi = -1;
+			while(i < n && iter[i].first <= r) {
+				if (iter[i].second > maxr) {
+					maxr = iter[i].second;
+					maxi = i;
 				}
 				i++;
 			}
-			if (maxi == -1) break;
-			used.push_back(segs[maxi]);
-			end = segs[maxi].second;
+			if (maxi == -1)
+				break;
+			ans[count++] = maxi;
+			r = maxr;
 		}
-		if (end >= M) {
-				cout << used.size() << endl;
-				for(auto a : used) cout << a.first << " " << a.second << endl;
-		} else cout << 0 << endl;
-		if (cases) cout << endl;
-	}
+		if (r < m)
+			count = 0;
+		
+		cout << count << endl;
+		for(int j = 0; j < count; j++)
+			cout << iter[ans[j]].first << " " << iter[ans[j]].second << endl;
+		if (t)
+			cout << endl;
+	}	
+
 	return 0;
 }
