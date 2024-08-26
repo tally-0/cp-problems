@@ -1,41 +1,33 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
+#include<iostream>
+#include<algorithm>
+#include<numeric>
 
 using namespace std;
 
-struct Job {
-	int dur;
-	int fine;
-	int id;
-};
+#define endl '\n'
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int cases, n, temp;
-	cin >> cases;
-	while(cases--) {
+	int T, n, s[1000], t[1000], ans[1000];
+	cin >> T;
+	while(T--) {
 		cin >> n;
-		vector<Job> jobs(n);
-		for(int i = 0; i < n; i++) {
-			cin >> jobs[i].dur >> jobs[i].fine;
-			jobs[i].id = i + 1;
-		}
-		
-		// stable sort to keep lexicographical order
-		stable_sort(jobs.begin(), jobs.end(), [] (const Job &lhs, const Job &rhs) {
-			return lhs.dur * rhs.fine < rhs.dur * lhs.fine;
+		for(int i = 0; i < n; i++)
+			cin >> t[i] >> s[i];
+
+		iota(ans, ans + n, 0);
+		stable_sort(ans, ans + n, [=](const int& lhs, const int& rhs) {
+			return t[lhs] * s[rhs] < t[rhs] * s[lhs];
 		});
 
-		cout << jobs[0].id;
-		for(int i = 1; i < n; i++) {
-			cout << " " << jobs[i].id;
-		}
+		for(int i = 0; i < n; i++)
+			cout << (i ? " " : "") << ans[i] + 1;
 		cout << endl;
-		if(cases) cout << endl;
+		if (T)
+			cout << endl;
 	}
-	
+
 	return 0;
 }
