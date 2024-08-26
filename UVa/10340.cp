@@ -1,7 +1,8 @@
-#include <iostream>
-#include <string>
+#include<iostream>
 
 using namespace std;
+
+#define endl '\n'
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -10,18 +11,11 @@ int main() {
 	string s, t;
 	while(cin >> s >> t) {
 		int i = 0;
-		bool sub = false;
-		for(int j = 0; j < t.length(); j++) {
-			if (s[i] == t[j]) {
-				if (s.length() - 1 == i) {
-					sub = true;
-					break;
-				}
+		for(int j = 0; i < s.length() && j < t.length(); j++)
+			if (s[i] == t[j])
 				i++;
-			}
-		}
-		cout << (sub ? "Yes" : "No") << endl;
+		cout << (i == s.length() ? "Yes" : "No") << endl;
 	}
-	
+
 	return 0;
 }
