@@ -1,8 +1,6 @@
-/*
-Brute-Force as per hint in Halim's Competitive Programming
 #include<iostream>
 #include<algorithm>
-#include<climits>
+#include<cmath>
 
 using namespace std;
 
@@ -12,60 +10,28 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int digs[6];
-	string in;
-	getline(cin, in);
+	string s;
+	cin >> s;
 
-	int n;
-	for(const char &c : in)
-		digs[n++] = c - '0';
-	int x = 0, mult = 1;
-	for(int i = 1; i <= n; i++) {
-		x += digs[n - i] * mult;
-		mult *= 10;
+	int d[6], n = s.length(), m = 0;
+	for(int i = 0; i < n; i++) {
+		d[i] = s[i] - '0';
+		m += d[i] * pow(10, n - i - 1);
 	}
-	sort(digs, digs + n);
-
-	int mindiff = INT_MAX, ans = 0;
+	sort(d, d + n);
+	int ans = 1000000;
 	do {
-		int num = 0;
-		mult = 1;
-		for(int i = 1; i <= n; i++) {
-			num += digs[n - i] * mult;
-			mult *= 10;
-		}
-		if (num > x && ((num - x) < mindiff)) {
-			ans = num;
-			mindiff = num - x;
-		}
-	} while(next_permutation(digs, digs + n));
+		int a = 0;
+		for(int i = 0; i < n; i++)
+			a += d[i] * pow(10, i);
+		if (a > m && a < ans)
+			ans = a;
+	} while (next_permutation(d, d + n));
 
-	cout << ans;
+	if (ans == 1000000)
+		cout << 0;
+	else
+		cout << ans;
 
 	return 0;
-}
-*/
-
-// Optimized
-#include <algorithm>
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-
-
-int main() {
-    string s, t;
-    cin >> s;
-    t = s;
-
-    next_permutation(t.begin(), t.end());
-
-    if(t <= s) {
-        cout << "0" << endl;
-    }
-    else {
-        cout << t << endl;
-    }
 }
