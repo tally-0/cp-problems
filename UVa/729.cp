@@ -1,6 +1,5 @@
 #include<iostream>
 #include<algorithm>
-#include<string>
 
 using namespace std;
 
@@ -14,12 +13,15 @@ int main() {
 	cin >> t;
 	while(t--) {
 		cin >> n >> h;
-		string s = "";
-		for(int i = 0; i < n; i++)
-			s += (i >= (n - h)) + '0';
-		do {
+		
+		string s;
+		for(int i = 0; i < n - h; i++)
+			s += '0';
+		for(int i = 0; i < h; i++)
+			s += '1';
+		do
 			cout << s << endl;
-		} while(next_permutation(s.begin(), s.end()));
+		while(next_permutation(begin(s), end(s)));
 		if (t)
 			cout << endl;
 	}
