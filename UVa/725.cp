@@ -1,30 +1,36 @@
-#include<cstdio>
+#include<iostream>
+#include<iomanip>
 
 using namespace std;
 
 #define endl '\n'
 
 int main() {
-	int n, first = 1;
-	while(scanf("%d", &n) && n) {
-		if (!first)
-			puts("");
-		first = 0;
-		bool f = false;
-		for(int i = 1234; i <= (98765 / n); i++) {
-			int j = i * n;
-			int used = (i < 10000);
-			for(int a = i; a; a /= 10)
-				used |= 1 << (a % 10);
-			for(int a = j; a; a /= 10)
-				used |= 1 << (a % 10);
-			if (used == (1 << 10) - 1) {
-				printf("%05d / %05d = %d\n", j, i, n);
-				f = true; 
-			}
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	int n, first = false;
+	while(cin >> n && n) {
+		if (first++)
+			cout << endl;
+
+		bool sol = false;
+		for(int a = 1234; a <= 98765 / n; a++) {
+			int b = a * n;
+			int f = (a < 10000);
+			for(int i = a; i; i /= 10)
+				f |= 1 << (i % 10);
+			for(int i = b; i; i /= 10)
+				f |= 1 << (i % 10);
+			if (f != (1 << 10) - 1)
+				continue;
+			sol = true;
+
+			cout << setw(5) << setfill('0') << b << " / " << setw(5) << setfill('0') << a << " = " << n << endl;
 		}
-		if (!f)
-			printf("There are no solutions for %d.\n", n);
+
+		if (!sol)
+			cout << "There are no solutions for " << n << "." << endl;
 	}
 
 	return 0;
