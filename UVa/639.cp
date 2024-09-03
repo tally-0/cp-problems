@@ -1,5 +1,4 @@
 #include<iostream>
-#include<cstring>
 
 using namespace std;
 
@@ -9,43 +8,50 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int n, grid[4][4];
-	string s;
+	int n, b[4][4];
 	while(cin >> n && n) {
+		char a;
 		for(int i = 0; i < n; i++) {
-			cin >> s;
-			for(int j = 0; j < n; j++)
-				grid[i][j] = s[j] == '.' ? true : false;
+			for(int j = 0; j < n; j++) {
+				cin >> a;
+				b[i][j] = (a == 'X');
+			}
 		}
 
-		int maxrp = 0;
-		for(int a = 0; a < (1 << (n * n)); a++) {
-			int f = true, rp = 0, csee[4] = { false };
-			for(int i = 0; i < n; i++) {
-				bool rsee = false;
-				for(int j = 0; j < n; j++) {
-					if (a & (1 << (i * n + j))) {
-						if (rsee || !grid[i][j] || csee[j]) {
-							f = false;
-							break;
-						}
-						rp++;
-						rsee = true;
-						csee[j] = true;
-					}
-					if (!grid[i][j]) {
-						rsee = false;
-						csee[j] = false;
-					}
+		int ans = 0;
+		for(int s = 0; s < (1 << n * n); s++) {
+			bool v = true;
+			for(int i = 0; i < n && v; i++) {
+				bool f1 = true;
+				bool f2 = true;
+				for(int j = 0; j < n && v; j++) {
+					if (b[j][i])
+						if (s & (1 << j * n + i))
+							v = false;
+						else
+							f1 = true;	
+					else if (s & (1 << j * n + i))
+						if (!f1)
+							v = false;
+						else
+							f1 = false;
+					if (b[i][j])
+						if (s & (1 << i * n + j))
+							v = false;
+						else
+							f2 = true;
+					else if (s & (1 << i * n + j))
+						if (!f2)
+							v = false;
+						else
+							f2 = false;
 				}
-				if (!f)
-					break;
 			}
-			if (f && rp > maxrp)
-				maxrp = rp;
+			if (v)
+				ans = max(ans, __builtin_popcount(s));
 		}
 		
-		cout << maxrp << endl;
+		cout << ans << endl;
 	}
 
 	return 0;
