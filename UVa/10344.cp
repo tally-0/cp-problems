@@ -1,41 +1,32 @@
-#include <iostream>
-#include <algorithm>
+#include<iostream>
+#include<algorithm>
 
 using namespace std;
 
 #define endl '\n'
 
-int nums[5];
+int n[5];
 
-bool calc(int o, int s) {
-    if (o == 4)
-        return s == 23;
-    o++;
-    return calc(o, s + nums[o]) || calc(o, s - nums[o]) || calc(o, s * nums[o]);
+bool bt(int s, int i) {
+	if (i == 5)
+		return s == 23;
+	return bt(s + n[i], i + 1) || bt(s - n[i], i + 1) || bt(s * n[i], i + 1);
 }
 
 int main() {
-    ios::sync_with_stdio(false);
+	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-    while (cin >> nums[0] >> nums[1] >> nums[2] >> nums[3] >> nums[4]) {
-        int s = 0;
-        for(const int &n : nums)
-            s += n;
-        if (!s)
-            break;
+	while(cin >> n[0] >> n[1] >> n[2] >> n[3] >> n[4] && n[0] + n[1] + n[2] + n[3] + n[4]) {
+		sort(n, n + 5);
 
-        sort(nums, nums + 5);
-        bool f = false;
-        do {
-            f = calc(0, nums[0]);
-        } while (next_permutation(nums, nums + 5) && !f);
-        
-        if (f)
-            cout << "Possible" << endl;
-        else
-            cout << "Impossible" << endl;
-    }
+		bool ans = false;
+		do {
+			ans = bt(n[0], 1);
+		} while(next_permutation(n, n + 5) && !ans);
 
-    return 0;
+		cout << (ans ? "Possible" : "Impossible") << endl;
+	}
+
+	return 0;
 }
