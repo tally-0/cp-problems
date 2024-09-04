@@ -1,4 +1,5 @@
-#include<cstdio>
+#include<iostream>
+#include<iomanip>
 #include<cmath>
 
 using namespace std;
@@ -6,22 +7,26 @@ using namespace std;
 #define endl '\n'
 
 int main() {
-    int n;
-    printf("PERFECTION OUTPUT\n");
-    while(scanf("%d", &n) && n) {
-        int s = 1;
-        for(int m = 2; m <= sqrt(n); m++)
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	int n;
+	cout << "PERFECTION OUTPUT" << endl;
+	while(cin >> n && n) {
+		int s = 1;
+		for(int m = 2; m <= sqrt(n); m++)
             if (!(n % m))
                 s += m + (n / m);
-        
-        if (s < n || n == 1)
-            printf("%5d  DEFICIENT\n", n);
-        else if (s > n)
-            printf("%5d  ABUNDANT\n", n);
-        else
-            printf("%5d  PERFECT\n", n);
-    }
-    printf("END OF OUTPUT\n");
 
-    return 0;
+		cout << setw(5) << n << "  ";
+		if (s == n || n == 1)
+			cout << "PERFECT" << endl;
+		else if (s < n)
+			cout << "DEFICIENT" << endl;
+		else
+			cout << "ABUNDANT" << endl;
+	}
+	cout << "END OF OUTPUT" << endl;
+
+	return 0;
 }
