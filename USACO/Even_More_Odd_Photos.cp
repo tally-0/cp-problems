@@ -1,5 +1,4 @@
 #include<iostream>
-#include<vector>
 
 using namespace std;
 
@@ -9,33 +8,25 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int n, num;
+	int n;
 	cin >> n;
-	int odd = 0, even = 0;
-	for (int i = 0; i < n; i++) {
-		cin >> num;
-		if (num % 2 == 0) even++;
-		else odd++;
+	int no = 0, ne = 0;
+	for(int i = 0, a; i < n; i++) {
+		cin >> a;
+		if (a % 2)
+			no++;
+		else
+			ne++;
 	}
+	
+	while(no > ne) {
+		no -= 2;
+		ne += 1;
+	}
+	while(ne - no > 1)
+		ne--;
 
-	if (odd > even) {
-		int diff = odd - even;
-		switch (diff % 3) {
-		case 0:
-			cout << 2 * even + diff / 3 * 2 << endl;
-			break;
-		case 1:
-			cout << 2 * even + diff / 3 * 2 - 1 << endl;
-			break;
-		case 2:
-			cout << 2 * even + diff / 3 * 2 + 1 << endl;
-			break;
-		}
-	} else if (odd < even) {
-		cout << 2 * odd + 1 << endl;
-	} else {
-		cout << odd + even << endl;
-	}
+	cout << 2 * no + (ne > no);
 
 	return 0;
 }
