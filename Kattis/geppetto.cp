@@ -13,18 +13,20 @@ int main() {
 	cin >> n >> m;
 	for(int i = 0, a, b; i < m; i++) {
 		cin >> a >> b;
-		a--; b--;
+		a--;
+		b--;
 		p[i] = (1 << a) | (1 << b);
 	}
+
 	int ans = 0;
 	for(int i = 0; i < (1 << n); i++) {
-		bool f = true;
-		for(int j = 0; j < m && f; j++)
-			if ((i & p[j]) == p[j])
-				f = false;
-		if (f)
+		bool f = false;
+		for(int j = 0; j < m && !f; j++)
+			f = ((i & p[j]) == p[j])
+		if (!f)
 			ans++;
 	}
+
 	cout << ans;
 
 	return 0;
