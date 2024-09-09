@@ -1,5 +1,4 @@
 #include<iostream>
-#include<vector>
 
 using namespace std;
 
@@ -13,14 +12,14 @@ int main() {
 	cin >> t;
 	while(t--) {
 		cin >> n;
-		int c[10] = {};
-		for(int i = 1; i <= n; i++) {
-			if (i >= 10) c[floor(i/10)%10+'0']++;
-			c[i%10+'0']++;
-		}
-		for(int d : c) cout << d << " ";
+		int c[10] = { 0 };
+		for(int i = 1; i <= n; i++)
+			for(int j = 1; j <= i; j *= 10)
+				c[((i / j) % 10)]++;
+		for(int i = 0; i < 10; i++)
+			cout << (i == 0 ? "" : " ") << c[i];
 		cout << endl;
-	}
+	} 
 
 	return 0;
 }
