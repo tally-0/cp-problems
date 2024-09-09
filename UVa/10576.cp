@@ -1,43 +1,48 @@
-#include <iostream>
-#include <cstring>
-#include <climits>
+#include<iostream>
 
 using namespace std;
 
 #define endl '\n'
 
-int s, d;
+int s, d, r[12], ans;
 
-int backtrack(int postings[12], int m = 0, int t = 0) {
-    if(m >= 5) {
-        int sum = 0;
-        for(int i = m - 5; i < m; i++)
-            sum += postings[i];
-        if(sum >= 0)
-            return INT_MIN;
-        if (m == 12)
-            return t;
-    }
-    int a[12] , b[12];
-    for(int i = 0; i < m; i++)
-        a[i] = b[i] = postings[i];
-    a[m] = s;
-    b[m] = -d;
-    return max(backtrack(a, m + 1, t + s), backtrack(b, m + 1, t - d));
+void backtrack(int i, int sum) {
+	if (i == 12) {
+		ans = max(ans, sum);
+		return;
+	}
+	if (i > 3) {
+		int c = 0;
+		for(int j = i - 4; i < i; i++)
+			c += r[j];
+		if (c + s < 0) {
+			r[i] = s;
+			backtrack(i + 1, sum + s);
+		}
+		if (c - d < 0) {
+			r[i] = -d;
+			backtrack(i + 1, sum - d);
+		}
+	} else {
+		r[i] = s;
+		backtrack(i + 1, sum + s);
+		r[i] = -d;
+		backtrack(i + 1, sum - d);
+	}
 }
 
 int main() {
-    ios::sync_with_stdio(false);
+	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-    int zeros[12] = { 0 };
-    while(cin >> s >> d) {
-        int ans = backtrack(zeros);
-        if(ans < 0)
-            cout << "Deficit\n";
-        else
-            cout << ans << '\n';
-    }
+	while(cin >> s >> d) {
+		ans = -1;
+		backtrack(0, 0);
+		if (ans >= 0)
+			cout << ans << endl;
+		else
+			cout << "Deficit" << endl;
+	}
 
-    return 0;
+	return 0;
 }
