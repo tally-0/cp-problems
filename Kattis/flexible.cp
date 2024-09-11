@@ -1,5 +1,4 @@
 #include<iostream>
-#include<cstring>
 
 using namespace std;
 
@@ -9,22 +8,22 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int w, p, walls[100], pos[100];
+	int w, p, l[100];
 	cin >> w >> p;
 	for(int i = 0; i < p; i++)
-		cin >> walls[i];
-
-	memset(pos, false, sizeof(pos));
+		cin >> l[i];
+	
+	bool ans[101] = { false };
+	ans[w] = true;
 	for(int i = 0; i < p; i++)
-		pos[walls[i]] = pos[w - walls[i]] = true;
+		ans[l[i]] = true;
 	for(int i = 0; i < p - 1; i++)
 		for(int j = i + 1; j < p; j++)
-			pos[walls[j] - walls[i]] = true;
+			ans[l[j] - l[i]] = true;
 
-	for(int i = 1; i < w; i++)
-		if (pos[i])
+	for(int i = 0; i < 101; i++)
+		if (ans[i])
 			cout << i << " ";
-	cout << w;
 
 	return 0;
 }
