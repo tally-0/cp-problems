@@ -1,6 +1,4 @@
 #include<iostream>
-#include<map>
-#include<string>
 
 using namespace std;
 
@@ -10,20 +8,22 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int n, res = 0;
-	string str;
-	cin >> n >> str;
-	char last = str[0];
-	for(int i = 0; i < n; i += 2) {
-		if (str[i] == str[i+1]) continue;
-		if (str[i] != last) {
-			res++;
-			last = str[i];
-		}
+	int n;
+	cin >> n; 
+	if (n % 2)
+		n--;
+	string s;
+	cin >> s;
+	
+	int ans = 0;
+	for(int i = n - 1; i > 0; i -= 2) {
+		if (ans % 2 == 0 && s[i] == 'H' && s[i - 1] == 'G')
+			ans++;
+		if (ans % 2 == 1 && s[i] == 'G' && s[i - 1] == 'H')
+			ans++;
 	}
-	if (last== 'G') res++;
 
-	cout << res << endl;
+	cout << ans;
 
 	return 0;
 }
