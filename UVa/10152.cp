@@ -7,23 +7,26 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int K, n;
-	cin >> K;
-
-	string name;
-	while(K--) {
+	int k, n;
+	cin >> k;
+	string s;
+	while(k--) {
 		cin >> n;
-		cin.ignore(); // idk why this is needed
-		vector<string> org(n);
-		for (string &i : org) getline(cin, i);
-		vector<string> sort(n);
-		for (string &i : sort) getline(cin, i);
+		cin.ignore();
+		vector<string> o(n);
+		for (string &i : o)
+			getline(cin, i);
+		vector<string> g(n);
+		for (string &i : g)
+			getline(cin, i);
 
-		int i = n - 1, j = n - 1;
-		for (; i >= 0; i--) {
-			if (org[i] == sort[j]) j--;
-		}
-		while (j >= 0) cout << sort[j--] << endl;
+		int j = n - 1;
+		for (int i = n - 1; i >= 0; i--)
+			if (o[i] == g[j])
+				j--;
+
+		while (j >= 0)
+			cout << g[j--] << endl;
 		cout << endl;
 	}
 	return 0;
